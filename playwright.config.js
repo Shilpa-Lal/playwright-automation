@@ -2,7 +2,6 @@
 import { defineConfig, devices } from '@playwright/test';
 import { on } from 'node:cluster';
 import { trace } from 'node:console';
-
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -10,7 +9,6 @@ import { trace } from 'node:console';
 // import dotenv from 'dotenv';
 // import path from 'path';
 // dotenv.config({ path: path.resolve(__dirname, '.env') });
-
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
@@ -35,7 +33,6 @@ const config = ({
 
     
   },
-
   
 });
 module.exports = config; // export this variable so that it will be available across your project
