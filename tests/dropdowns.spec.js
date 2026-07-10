@@ -67,7 +67,7 @@ console.log(await radioButtons.nth(1).isChecked()); // validate if the second ra
 console.log(await radioButtons.nth(0).isChecked()); // validate if the first radio button is not selected 
 
 // select option from dropdown by value
-await dropdown.selectOption('consult'); 
+await dropdown.selectOption('consultant'); 
 //await page.pause(); // pause the test execution to see the selected option in dropdown
 console.log(await dropdown.inputValue()); // print the selected value in console
 

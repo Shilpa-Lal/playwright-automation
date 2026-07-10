@@ -20,6 +20,8 @@ test('Link opens in new tab', async ({browser}) =>
 
     const text = await newPage.locator(".red").textContent(); // wait for the element with class red to be visible in the new page
     console.log(text); // print the element in console
+    
+
 
 });
 
