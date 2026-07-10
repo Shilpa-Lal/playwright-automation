@@ -1,27 +1,41 @@
+// in some banking application, we have to pass many parameters, only token is not sufficient
+// Login through UI, it will copy all the contents from 'Application' tab, store it in a .json file 
+// when broswer will invoke for test cases - inject full .json file there to open it with all the storage details stored in that file
+//so that no need to login again, all cookies are present in .json file and we directly start with the test case
+// add to cart, order confirmation, order history, order details, order cancellation
 const {test,expect} = require('@playwright/test');
+let webContext;
 
-
-test('Client App Login', async ({page}) => 
+test.beforeAll(async({browser})=>
 {
-    
-    const productName = "ZARA COAT 3"; // product name to be added to cart
-    const products = page.locator(".card-body"); // locator for product titles
-    const email = ("lal.shilpa4@gmail.com"); // email id to be used in login and checkout page
-
+    const context = await browser.newContext();
+    const page = await context.newPage();   
     await page.goto("https://rahulshettyacademy.com/client/");
     
-    await page.locator('#userEmail').fill(email);
+    await page.locator('#userEmail').fill("lal.shilpa4@gmail.com");
     await page.locator('#userPassword').fill("Admin@123");
     await page.locator('#login').click();
-    //await page.waitForLoadState('networkidle'); // wait for the page to load completely - might be flacky
+    
+    await page.waitForLoadState('networkidle'); // wait for the page to load completely - might be flaky
 
-    //wait for the first card title to be visible - more reliable than waitForLoadState
-    await page.locator('.card-body b').first().waitFor(); // wait for the first card title to be visible - more reliable than waitForLoadState  
+    await context.storageState({path:"state.json"}); //store all the cookies and local storage in a .json file
+
+    webContext = await browser.newContext({storageState:"state.json"}); // create a new context with the stored cookies and local storage
+
+})
 
 
-//console.log(await cardTitles.first().textContent()); // grab the first card title and print in console
-const titles = await page.locator(".card-body b").allTextContents();
-console.log(titles);
+test('Client App Login', async () => 
+{
+    const email = "";
+    const productName = "ZARA COAT 3"; // product name to be added to cart
+
+    const page = await webContext.newPage(); // create a new page in the context with stored cookies and local storage
+    await page.goto("https://rahulshettyacademy.com/client/");
+
+    const products = page.locator(".card-body"); // locator for product titles
+    const titles = await page.locator(".card-body b").allTextContents();
+    console.log(titles);
 
 // to get count of products
 const count = await products.count();
@@ -108,8 +122,10 @@ for (let i=0; i< await rows; ++i)
     }
 }
 
-const orderIDDetails = await (page.locator(".col-text")).textContent(); // get the order ID from the order details page
+//const orderIDDetails = await (page.locator(".col-text")).textContent(); // get the order ID from the order details page
+const orderIDDetails = await (page.locator(".ng-star-inserted")).textContent();
 expect (orderID.includes(orderIDDetails)).toBeTruthy(); // assert that the order ID in the order details page is same as the order ID in the orders page
 console.log("Order ID in order details page: ", orderIDDetails);
+
 
 });
