@@ -38,7 +38,7 @@ const cartProduct = await expect(
 ).toBeVisible();
 console.log(cartProduct); // print the product name in cart in console
 */
-
+//Check same item got added to the cart or not
  const cartProduct = await page.locator("h4 a").filter({ hasText: productName });
  await expect(cartProduct).toBeVisible();
  console.log(await cartProduct.textContent());

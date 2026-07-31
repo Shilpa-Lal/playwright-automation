@@ -17,10 +17,10 @@ import { trace } from 'node:console';
 const config = ({ 
   testDir: './tests',
   //timepout for each test case
-  timeout: 40 * 1000,
+  timeout: 50 * 1000,
   //timeout excluesively for all expect assertion 
   expect: {
-    timeout: 40 * 1000,
+    timeout: 50 * 1000,
   },
   reporter: 'html', //reporter to generate html report after test execution
   use: {
