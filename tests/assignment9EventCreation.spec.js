@@ -25,7 +25,7 @@ test.only('Section 9-Assignment-Full booking flow with Event Creation', async ({
     await page.getByPlaceholder('••••••').fill("Admin@123");
     await page.locator('#login-btn').click();
 
-    await expect(page.locator(".leading-tight")).toHaveText("Discover & BookAmazing Events");
+    await expect(page.locator(".leading-tight")).toHaveText("Discover & BookAmazing Events"); // validate page redirected properly
 
     
     
@@ -41,14 +41,21 @@ test.only('Section 9-Assignment-Full booking flow with Event Creation', async ({
     await page.getByLabel('Event Date & Time').fill(futureDateValue());
     await page.getByLabel('Price ($)').fill('100');
     await page.getByLabel('Total Seats').fill('50');
-    await page.locator('#add-event-btn').click();
+    await page.locator('button[type="submit"]').click();
     await expect(page.getByText('Event created!')).toBeVisible();
 
     await page.locator("#nav-events").click(); //click on tab 'Events'
+    //await page.locator(".event-card").first().waitFor(); //wait until cards are loaded.
 
-    //await page.waitForEvent('networkidle');
+    // Step 3: Print all event titles
+    const titles = await page.locator(".event-card h3").allTextContents();
+    console.log(titles);
+    console.log("Expected:", eventTitle);
 
-    await page.locator("#event-card").filter({hasText: "eventTitle"}).getByRole("a", {name: "Book Now"}).click(); 
+    //await page.waitForLoadState('networkidle');
+
+    await page.getByText(eventTitle).waitFor();
+    await page.locator(".event-card").filter({hasText: eventTitle}).getByRole("a", {name: "Book Now"}).click(); 
 
     await page.locator('.grid-cols-1').first().waitFor(); 
 

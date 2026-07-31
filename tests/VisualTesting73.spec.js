@@ -16,7 +16,7 @@ test('Screenshot & Visual Comparison', async ({page}) =>
 
 });
 
-//screenshot comparison
+//screenshot comparison // screenshot - store -> screenshot -> 
 //on first run, the test case will fail, as we do not have landing.png in the baseline folder. It will create a new landing.png in the baseline folder. 
 //On subsequent runs, it will compare the screenshot with the baseline image and pass/fail based on the comparison.
 test.only('Visual Comparison', async ({page}) => 
